@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Lockout Competition - Co-op</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .goal-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .goal {
+            margin-bottom: 5px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #red-btn {
+            background-color: red;
+            color: white;
+        }
+        #blue-btn {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Minecraft Lockout Competition - Co-op</h1>
+        <div>
+            <button class="button" id="red-btn" onclick="setColor('red')">Red</button>
+            <button class="button" id="blue-btn" onclick="setColor('blue')">Blue</button>
+        </div>
+        <div class="player-goals">
+            <h3>Player 1 & 2 Goals:</h3>
+            <ul class="goal-list" id="shared-goals">
+                <!-- Goals will be dynamically added here -->
+            </ul>
+        </div>
+        <button onclick="generateGoals()">Generate Goals</button>
+    </div>
+
+    <script>
+        function generateGoals() {
+            const goals = [
+                "Go to the nether", 
+                "Get kelp", 
+                "Get any diamond tool", 
+                "Die to a witch", 
+                "Kill the other player", 
+                "Kill a zombified piglin", 
+                "Get a buried treasure", 
+                "Create a golden apple", 
+                "Get full leather armour", 
+                "Breed cows", 
+                "Loot a ruined portal", 
+                "Craft full wooden tools", 
+                "Die to a zombified villager", 
+                "Trade with a villager", 
+                "Kill an Iron Golem", 
+                "Reach build limit", 
+                "Reach bedrock", 
+                "Kill 10 mobs (can be the same type)", 
+                "Find a basalt deltas", 
+                "Have a golden carrot", 
+                "Have suscipicious stew", 
+                "Have 3 different colours of dye", 
+                "Obtain one ancient debris", 
+                "Kill a creeper", 
+                "Get cooked salmon/cod"
+            ];
+
+            const selectedGoals = selectRandomGoals(goals);
+
+            displayGoals('shared-goals', selectedGoals);
+        }
+
+        function selectRandomGoals(goals) {
+            return goals.sort(() => Math.random() - 0.5).slice(0, 13);
+        }
+
+        function setColor(color) {
+            localStorage.setItem('currentColor', color);
+        }
+
+        function getCurrentColor() {
+            return localStorage.getItem('currentColor');
+        }
+
+        function displayGoals(elementId, goals) {
+            const goalList = document.getElementById(elementId);
+            goalList.innerHTML = '';
+            goals.forEach((goal, index) => {
+                const listItem = document.createElement('li');
+                const button = document.createElement('button');
+                button.textContent = `${index + 1}. ${goal}`;
+                button.className = 'goal';
+                button.onclick = function() {
+                    const color = getCurrentColor();
+                    if (color) {
+                        button.style.backgroundColor = color;
+                    }
+                };
+                listItem.appendChild(button);
+                goalList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>
